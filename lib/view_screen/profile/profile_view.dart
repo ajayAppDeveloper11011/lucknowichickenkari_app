@@ -21,8 +21,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle : true,
+          leading: InkWell(
+            onTap: () {
+
+            },
+            child: const Icon(Icons.arrow_back,color: AppColors.white,),
+          ),
           backgroundColor: AppColors.primary,
-          title:const Text('My Profile'),
+          title:const Text('My Profile',style: TextStyle(color: AppColors.white),),
         ),
         body : Padding(
           padding: const EdgeInsets.all(8.0),
@@ -32,73 +38,86 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SizedBox(height:20,),
                 controller.userData.isEmpty
                     ? const Center(
-                    child: CircularProgressIndicator(
+                      child: CircularProgressIndicator(
                         backgroundColor: AppColors.primary))
-                    : Container(
-                  color: AppColors.whit,
-                  height:100,
-                  width: MediaQuery.of(context).size.width/1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            margin: const EdgeInsetsDirectional.only(end: 20),
-                            height: 90,
-                            width: 90,
-                            decoration: BoxDecoration(
+                    :
+                Container(
+                       color: AppColors.whit,
+                       height:110,
+                       width: MediaQuery.of(context).size.width/1,
+                     child: Row(
+                         mainAxisAlignment: MainAxisAlignment.start,
+                       children: [
+                        Stack(
+                           children: [
+                             Container(
+                                margin: const EdgeInsetsDirectional.only(end: 20),
+                                height:110,
+                                width:110,
+                                decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
                                     width: 1.0, color:AppColors.whit)),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100.0),
-                                child:controller.userData.first.profileImage.isEmpty? Image.asset("assets/images/man_image1.jpg",fit: BoxFit.fill,):Image.network(controller.userData[0].profileImage,fit: BoxFit.fill)
+                               child: Card(
+                                    elevation: 5,
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+                                 child: ClipRRect(
+                                     borderRadius: BorderRadius.circular(50.0),
+                                     child:controller.userData.first.profileImage.isEmpty? Image.asset("assets/images/man_image1.jpg",fit: BoxFit.fill,):Image.network(controller.userData[0].profileImage,fit: BoxFit.fill)
 
+                              ),
                             ),
                           ),
-                          Positioned(
-                            top: 65,
-                            left: 63,
-                            child: Container(
-                              height:30,
-                              width: 30,
-                              decoration: BoxDecoration(
-                                  color: AppColors.whit,
-                                  borderRadius: BorderRadius.circular(40)),
-                              child: InkWell(
-                                  onTap: () {
-                                    controller.openChangeUserDetailsBottomSheet(context);
-                                  },
-                                  child: const Icon(Icons.edit_outlined,color: AppColors.red,)),
+                             Positioned(
+                                top: 70,
+                                left:70,
+                              child: Card(
+                                  elevation: 5,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                                  child: Container(
+                                     height:30,
+                                     width: 30,
+                                    decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(40)),
+                                    child: InkWell(
+                                       onTap: () {
+                                        controller.openChangeUserDetailsBottomSheet(context);
+                                      },
+                                       child: const Icon(Icons.edit_outlined,color: AppColors.red,)),
+                              ),
                             ),
                           )
-                        ],
+                          ],
                       ),
                       const SizedBox(width:20,),
-                      Column(
+                      user_id==null? InkWell(
+                        onTap: () {
+                          controller.checkLogin();
+                        },
+                          child: const Text('Login',style: TextStyle(color: AppColors.black),)):Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const SizedBox(height: 30,),
-                          controller.userData.first.name.isEmpty?const Text('Name'):Text(controller.skipLogin==true?'User Not Found':controller.userData.first.name,style: const TextStyle(color: AppColors.black,fontWeight: FontWeight.bold,fontSize: 15),),
+                          controller.userData.first.name.isEmpty?const Text('Name'):Text(user_id ==null?'User Not Found':controller.userData.first.name,style: const TextStyle(color: AppColors.black,fontWeight: FontWeight.bold,fontSize: 15),),
                           const SizedBox(height:5,),
-                          controller.userData.first.mobile.isEmpty?const SizedBox.shrink() :Text(controller.skipLogin==true?'':controller.userData.first.mobile,style: const TextStyle(color: AppColors.black),),
+                          controller.userData.first.mobile.isEmpty?const SizedBox.shrink() :Text(user_id ==null?'':controller.userData.first.mobile,style: const TextStyle(color: AppColors.black),),
                           const SizedBox(height:5,),
                           controller.userData.first.email.isEmpty?const Text('Name'):InkWell(
                               onTap: () {
-                                if(controller.skipLogin==true){
+                                if(user_id ==null){
                                   Get.toNamed(loginScreen);
                                 }
                               },
-                              child: Text(controller.skipLogin==true?'Login Now':controller.userData.first.email,style: const TextStyle(color: AppColors.black),)),
+                              child: Text(user_id==null? 'Login Now':controller.userData.first.email,style: const TextStyle(color: AppColors.black),)),
 
                         ],
-                      )
+                      ),
+                      const SizedBox(height:20,),
                     ],
                   ),
                 ),
 
-               const SizedBox(height: 10,),
+               const SizedBox(height:20,),
                 // Order history section
                 Container(
                   color: AppColors.whit,

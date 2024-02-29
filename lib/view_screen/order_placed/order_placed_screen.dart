@@ -23,8 +23,13 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.white,)),
           backgroundColor: AppColors.primary,
-          title: const Text('Order Placed '),
+          title: const Text('Order Placed ',style:TextStyle(color:AppColors.white),),
         ),
         body: Container(
               height: MediaQuery.of(context).size.height/1,
@@ -47,6 +52,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
                       'Continue Shopping',
                       style: TextStyle(
                         fontSize:15,
+                        color: AppColors.white,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -66,6 +72,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen> {
                       'View Order',
                       style: TextStyle(
                         fontSize:15,
+                        color: AppColors.white,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

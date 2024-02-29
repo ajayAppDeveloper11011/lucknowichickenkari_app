@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:lucknowichickenkari_app/Utils/colors.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../controllers/my_order_details_controller.dart';
 
@@ -40,11 +38,16 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
       return Scaffold(
         appBar: AppBar(
           centerTitle:true,
-          title: const Text('Order Details'),
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
+          title: const Text('Order Details',style: TextStyle(color: AppColors.white),),
           backgroundColor: AppColors.primary,
         ),
         body:SingleChildScrollView(
-          child: Column(
+          child:controller.orderDetailsData==null||controller.orderDetailsData==''?CircularProgressIndicator(): Column(
             children: [
               const SizedBox(height:20),
               Container(
@@ -53,63 +56,58 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(left:10.0,right: 20),
+                      padding: const EdgeInsets.only(left:10.0,right: 20,top:5),
                       child: Row(
                         children: [
                           Container(
-                            height:100,
-                            width: 80,
+                            height:110,
+                            width: 100,
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child:Image.asset('assets/images/formal_image1.jpg',fit: BoxFit.fill,)),
+                                child:controller.orderDetailsData?.first.productImage==''?Image.asset('assets/images/formal_image1.jpg',fit: BoxFit.fill,):Image.network(controller.orderDetailsData!.first.productImage,fit: BoxFit.fill,)),
                           ),
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding: const EdgeInsets.symmetric(horizontal:20.0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   ListView.builder(
                                       physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
-                                      itemCount: att.length,
+                                      itemCount: controller.orderDetailsData?.length,
                                       itemBuilder: (context, index) {
-                                        return Row(children: [
-                                          Flexible(
-                                            child: Text(
-                                              att[index].trim() + ":",
-                                              overflow: TextOverflow.ellipsis,
-
-                                            ),
+                                        return Flexible(
+                                          child: Text(
+                                            controller.orderDetailsData![index].productTitle,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(fontWeight: FontWeight.bold),
                                           ),
-                                          const Padding(
-                                            padding: EdgeInsetsDirectional.only(
-                                                start: 5.0),
-                                            child: Text(
-                                                'Ajay'
-                                            ),
-                                          )
-                                        ]);
+                                        );
                                       }),
-                                  const Row(children: [
-                                    Text(
-                                      'Quantity'":",
-
-                                    ),
+                                  Row(
+                                      children: [
+                                    const Text('Quantity'":",style: TextStyle(),),
+                                    const SizedBox(width: 10,),
                                     Padding(
                                       padding: EdgeInsetsDirectional.only(start: 5.0),
                                       child: Text(
-                                        'Ajay',
-
+                                          controller.orderDetailsData!.first.productQty.toString(),
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
                                       ),
                                     )
                                   ]),
-                                  const Text(
-                                    "Rs 222",
+                                  Row(
+                                    children: [
+                                      const Text("Price : ",),
+                                       const SizedBox(width: 10,),
+                                      Text(controller.orderDetailsData!.first.productPrice.toString(),
+                                        style: const TextStyle(fontWeight: FontWeight.bold),
+                                      )
 
+                                    ],
                                   ),
-                                  //  Text(orderItem.status)
                                 ],
                               ),
                             ),
@@ -490,7 +488,7 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
                 style: TextStyle(fontSize: 8),
               ),
               Text(
-                "pDate",
+                "Date",
                 style: TextStyle(fontSize: 8),
               ),
             ],
@@ -526,7 +524,7 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Order Proceed',
                 style: TextStyle(fontSize: 8),
               ),
@@ -554,7 +552,7 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
                 color: AppColors.red,
               ),
             ),
-            Icon(
+            const Icon(
               Icons.circle,
               color: AppColors.red,
               size: 15,
@@ -566,7 +564,7 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 'Order Proceed',
                 style: TextStyle(fontSize: 8),
               ),
@@ -613,7 +611,7 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
               ),
               Text(
                 sDate ?? " ",
-                style: TextStyle(fontSize: 8),
+                style: const TextStyle(fontSize: 8),
               ),
             ],
           ),
@@ -653,7 +651,7 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
               ),
               Text(
                 sDate,
-                style: TextStyle(fontSize: 8),
+                style: const TextStyle(fontSize: 8),
               ),
             ],
           ),
@@ -695,7 +693,7 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
               ),
               Text(
                 dDate ?? " ",
-                style: TextStyle(fontSize: 8),
+                style: const TextStyle(fontSize: 8),
                 textAlign: TextAlign.center,
               ),
             ],

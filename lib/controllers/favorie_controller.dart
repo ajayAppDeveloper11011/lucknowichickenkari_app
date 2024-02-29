@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucknowichickenkari_app/Services/api_client.dart';
 import 'package:lucknowichickenkari_app/controllers/appbased_controller/appbase_controller.dart';
 import 'package:lucknowichickenkari_app/models/get_favorite_response.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,7 +46,8 @@ int? index;
     try {
       Map<String, String> body = {};
       body[RequestKeys.userId]=userId.toString();
-      print('-------------user id-----${userId}');
+      body[RequestKeys.uniqueClientId]=ApiClient.uniqueKey;
+      print('-------------user id-----$userId');
       GetFavoriteResponseModel res = await api.getFavoriteApi(body);
 
       if (res.error==true) {
@@ -74,6 +76,7 @@ int? index;
     try {
       Map<String, String> body = {};
       body[RequestKeys.productId] = favoriteData[index].productId.toString();
+      body[RequestKeys.uniqueClientId]=ApiClient.uniqueKey;
       body[RequestKeys.userId] =userId ?? '';
       print('-------fuuuuuuuuuu$body');
       RemoveFavoriteModel res = await api.removeFavoriteApi(body);

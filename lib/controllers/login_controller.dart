@@ -19,7 +19,7 @@ import '../session/Session.dart';
 
 class LoginController extends AppBaseController{
 
-  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String? mobile,password;
   bool isVisible = false;
@@ -44,7 +44,7 @@ class LoginController extends AppBaseController{
   @override
   void dispose() {
     // Dispose the TextEditingController instances to release resources
-    emailController.dispose();
+    mobileController.dispose();
     passwordController.dispose();
     super.dispose();
   }
@@ -63,9 +63,6 @@ class LoginController extends AppBaseController{
     isVisible=!isVisible;
     update();
   }
-
-
-
 
   /// Login UI View----------------------->
   getLoginContainer(context) {
@@ -112,13 +109,13 @@ class LoginController extends AppBaseController{
                         ),
                         child: TextFormField(
 
-                          controller:emailController,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (value) => value!.isEmpty ? 'Email Can not empty':null,
+                          controller:mobileController,
+                          keyboardType: TextInputType.number,
+                          validator: (value) => value!.isEmpty ? 'Mobile Can not empty':null,
                           decoration: const InputDecoration(
                               border:InputBorder.none,
                               counterText: '',
-                              hintText: 'Enter Email id',
+                              hintText: 'Enter Mobile',
                               prefixIcon: Icon(Icons.email_outlined,color:AppColors.primary,)
                           ),
                         ),
@@ -168,7 +165,7 @@ class LoginController extends AppBaseController{
                         width: MediaQuery.of(context).size.width/1.2,
                         onPress: () {
                           // _formkey.currentState!.validate();
-                          if(emailController.text.isNotEmpty && passwordController.text.isNotEmpty){
+                          if(mobileController.text.isNotEmpty && passwordController.text.isNotEmpty){
                             loginUser();
                           }else{
                             Fluttertoast.showToast(msg: 'Please Enter Email And Password');
@@ -191,16 +188,16 @@ class LoginController extends AppBaseController{
                       ],
                     ),
                     const SizedBox(height:20,),
-                    Row(
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Are you want to skip Login? ",style: TextStyle(color:AppColors.primary,fontWeight: FontWeight.bold,fontSize:15),),
-                        InkWell(
-                            onTap: () {
-                              onSkipLogin();
-
-                            },
-                            child: const Text("SKIP NOW",style: TextStyle(color:AppColors.red,fontWeight: FontWeight.bold,fontSize:15,decoration: TextDecoration.underline,),)),
+                        Text("Are you want to skip Login? ",style: TextStyle(color:AppColors.primary,fontWeight: FontWeight.bold,fontSize:15),),
+                        // InkWell(
+                        //     onTap: () {
+                        //       onSkipLogin();
+                        //
+                        //     },
+                        //     child: const Text("SKIP NOW",style: TextStyle(color:AppColors.red,fontWeight: FontWeight.bold,fontSize:15,decoration: TextDecoration.underline,),)),
                       ],
                     ),
 
@@ -267,7 +264,7 @@ class LoginController extends AppBaseController{
     try {
 
       Map<String, String> body = {};
-      body[RequestKeys.email] = emailController.text.trim();
+      body[RequestKeys.mobile] = "+91${mobileController.text.trim()}";
       body[RequestKeys.password] = passwordController.text.trim();
       body[RequestKeys.uniqueClientId] = ApiClient.uniqueKey;
 
@@ -278,11 +275,11 @@ class LoginController extends AppBaseController{
 
         userData = res.data  ;
         print('this is id------>${userData[0].id}');
-        String? user_id = res.data[0].id.toString();
+        user_id = res.data[0].id.toString();
         // String? name = res.data[0].username ?? '';
         print('user id is here=====${user_id}');
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setString('user_id',user_id);
+        prefs.setString('user_id',user_id!);
         prefs.setString('temp_token',tempToken);
         // prefs.setString('userName',name);
 

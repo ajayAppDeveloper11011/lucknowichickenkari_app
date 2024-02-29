@@ -35,6 +35,7 @@ class GetCategoryModel {
 class CategoryData {
   int id;
   String catTitle;
+  String slug;
   String catImage;
   String metaTitleTag;
   String metaTitleKeywords;
@@ -45,6 +46,7 @@ class CategoryData {
   CategoryData({
     required this.id,
     required this.catTitle,
+    required this.slug,
     required this.catImage,
     required this.metaTitleTag,
     required this.metaTitleKeywords,
@@ -56,6 +58,7 @@ class CategoryData {
   factory CategoryData.fromJson(Map<String, dynamic> json) => CategoryData(
     id: json["id"]??'',
     catTitle: json["cat_title"]??'',
+    slug: json["slug"]??'',
     catImage: json["cat_image"]??'',
     metaTitleTag: json["meta_title_tag"]??'',
     metaTitleKeywords: json["meta_title_keywords"]??'',
@@ -67,6 +70,7 @@ class CategoryData {
   Map<String, dynamic> toJson() => {
     "id": id,
     "cat_title": catTitle,
+    "slug": slug,
     "cat_image": catImage,
     "meta_title_tag": metaTitleTag,
     "meta_title_keywords": metaTitleKeywords,

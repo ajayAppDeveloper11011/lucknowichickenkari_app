@@ -32,7 +32,7 @@ class SignUpController extends AppBaseController{
 
  /// Sign up Api Integration --------------->
 
-  Future<void> registerUser() async {
+   Future<void> registerUser() async {
     setBusy(true);
     try {
 
@@ -45,6 +45,7 @@ class SignUpController extends AppBaseController{
 
       RegisterUserResponse res = await api.registerUserApi(body);
       print('${res.message}_____gggg_');
+      print('${body}_____parameters');
 
       if (res.error==true) {
 
@@ -209,15 +210,9 @@ class SignUpController extends AppBaseController{
                               height:45,
                               width: MediaQuery.of(context).size.width/1.2,
                               onPress: () {
-                                if (nameController.text.isEmpty) {
+                                if (nameController.text.isEmpty ||passController.text.isEmpty||mobileController.text.isEmpty||emailController.text.isEmpty) {
                                   ShowMessage.showSnackBar('Name Error', 'Name is Empty');
-                                } else if (passController.text.isEmpty) {
-                                  ShowMessage.showSnackBar('Password Error', 'Password is Empty');
-                                } else if (mobileController.text.isEmpty) {
-                                  ShowMessage.showSnackBar('Mobile Error', 'Mobile is Empty');
-                                } else if (emailController.text.isEmpty) {
-                                  ShowMessage.showSnackBar('Email Error', 'Email is Empty');
-                                } else {
+                                }  else {
                                   registerUser();
                                 }
 

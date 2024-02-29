@@ -2,7 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucknowichickenkari_app/Route_managements/routes.dart';
+import 'package:lucknowichickenkari_app/Services/api_client.dart';
 import 'package:lucknowichickenkari_app/controllers/appbased_controller/appbase_controller.dart';
+import 'package:lucknowichickenkari_app/models/sub_category_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Services/request_keys.dart';
 import '../Utils/colors.dart';
@@ -11,6 +13,12 @@ import '../models/add_to_cart_response.dart';
 import '../models/product_data_response.dart';
 
 class ProductController extends AppBaseController{
+
+  String? origin;
+
+  final PageController pageController = PageController();
+  int currentPage = 0;
+  String? userId;
   String? productId;
   String? slugId;
   int number = 1;
@@ -18,18 +26,30 @@ class ProductController extends AppBaseController{
   String? selectedSize;
   int? selectedColor;
   bool skipLogin = true;
+  bool productCheck = false;
   List<ProductData>? productDetailsData;
+  List<SubCategoryData>? subCateProduct;
   List<AddToCartResponseModel>aadToCartResData=[];
+
+
+  int selectedImageIndex = 0; // Default to 0 or appropriate initial value
+
+  // Define the isImageSelected method to check if an image is selected
+  bool isImageSelected(int index) {
+    // Compare the selectedImageIndex with the given index
+    return selectedImageIndex == index;
+  }
 
   Future<void> checkSkipLogin(context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     skipLogin = prefs.getBool('skipLogin') ?? false;
-    if (skipLogin) {
-      print('-----Skip Login------$skipLogin');
+
+    if (user_id==null) {
+      print('-----Skip Login------$user_id');
       ShowMessage.showSnackBar('Server Res','Login First');
       Get.toNamed(loginScreen);
     } else {
-      print('-----You are Login------$skipLogin');
+      print('-----You are Login------$user_id');
       addItem(context);
       // Perform the regular login process
     }
@@ -40,22 +60,30 @@ class ProductController extends AppBaseController{
 
 
 
-  void onInit(){
+  void onInit() {
     super.onInit();
     storeColorsValue();
 
-    if(Get.arguments != null) {
-      productDetailsData  = Get.arguments;
-      print('------ProductData-----${productDetailsData?[0].id}');
+    if (Get.arguments != null) {
+      Map<String, dynamic> arguments = Get.arguments;
+       origin = arguments['origin'];
+
+      if (origin == 'home') {
+        productDetailsData = arguments['productDetailsData'];
+        print('productDetails Data -------------${productDetailsData?.first.productTitle}');
+        // subCateProduct = arguments['subCateData'];
+      } else if (origin == 'subcategory') {
+        // productDetailsData = arguments['productDetailsData'];
+        subCateProduct = arguments['subCateData'];
+        print('sub category data--------${subCateProduct?.first.subcatTitle}');
+      }
 
     }
 
-
-
     getProductId();
     // getProductDetailsData();
-
   }
+
 
   getProductId() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -196,7 +224,7 @@ class ProductController extends AppBaseController{
     Map<String, String>? header;
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = prefs.getString('user_id');
+    userId = prefs.getString('user_id');
     String? tempToken= prefs.getString('temp_token');
     setBusy(true);
     try {
@@ -213,6 +241,7 @@ class ProductController extends AppBaseController{
       body[RequestKeys.color] = 'red';
       body[RequestKeys.productQty] = number.toString();
       body[RequestKeys.userId] = userId.toString();
+      body[RequestKeys.uniqueClientId] =ApiClient.uniqueKey;
 
       AddToCartResponseModel res = await api.addToCartApi(body);
       print('parameter---------$body');
@@ -237,21 +266,64 @@ class ProductController extends AppBaseController{
 
   ///Calculation For Discount price------------------>
   calculationDiscount(){
-    var productPrice = double.parse(productDetailsData![0].productPrice);
-    var discount = (productPrice * 10 / 100);
-    var specialPrice = productPrice - discount;
-    var specialPriceAsString = specialPrice.toStringAsFixed(2);
-    return Text("Special Price: Rs.$specialPriceAsString",style: const TextStyle(color: AppColors.primary, fontSize: 12, fontWeight: FontWeight.w700,));
-
+    if(origin == 'home') {
+      var productPrice = double.parse(productDetailsData![0].productPrice);
+      var discount = (productPrice * 10 / 100);
+      var specialPrice = productPrice - discount;
+      var specialPriceAsString = specialPrice.toStringAsFixed(2);
+      return Text("Special Price: Rs.$specialPriceAsString",
+          style: const TextStyle(color: AppColors.primary,
+            fontSize: 12,
+            fontWeight: FontWeight.w700,));
+    }else{
+      var productPrice = 600;
+      var discount = (productPrice * 10 / 100);
+      var specialPrice = productPrice - discount;
+      var specialPriceAsString = specialPrice.toStringAsFixed(2);
+      return Text("Special Price: Rs.$specialPriceAsString",
+          style: const TextStyle(color: AppColors.primary,
+            fontSize: 12,
+            fontWeight: FontWeight.w700,));
+    }
   }
 
   ///Calculation For Total price------------------>
   calculationTotalPrice(){
-    var productPrice = double.parse(productDetailsData![0].productPrice);
-    var discount = (productPrice * 10 / 100);
-    var specialPrice = productPrice - discount;
-    var specialPriceAsString = specialPrice.toStringAsFixed(2);
-    return Text("Rs. ${(double.parse(specialPriceAsString)*number)}",style: const TextStyle(color: AppColors.primary, fontSize: 13, fontWeight: FontWeight.w500,));
-
+    if(origin == 'home') {
+      var productPrice = double.parse(productDetailsData![0].productPrice);
+      var discount = (productPrice * 10 / 100);
+      var specialPrice = productPrice - discount;
+      var specialPriceAsString = specialPrice.toStringAsFixed(2);
+      return Text("Rs. ${(double.parse(specialPriceAsString) * number)}",
+          style: const TextStyle(color: AppColors.primary,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,));
+    }else{
+      var productPrice = 600;
+      var discount = (productPrice * 10 / 100);
+      var specialPrice = productPrice - discount;
+      var specialPriceAsString = specialPrice.toStringAsFixed(2);
+      return Text("Rs. ${(double.parse(specialPriceAsString) * number)}",
+          style: const TextStyle(color: AppColors.primary,
+            fontSize: 13,
+            fontWeight: FontWeight.w500,));
+    }
   }
+
+
+
+  List<Map<String,dynamic>> productImages =  [
+    {
+      'productImage':'assets/images/formal_image1.jpg','check':'false'
+    },
+    {
+      'productImage':'assets/images/formal_image1.jpg','check':'false'
+    },
+    {
+      'productImage':'assets/images/formal_image1.jpg','check':'false'
+    },
+    {
+      'productImage':'assets/images/formal_image1.jpg','check':'false'
+    }
+  ];
 }

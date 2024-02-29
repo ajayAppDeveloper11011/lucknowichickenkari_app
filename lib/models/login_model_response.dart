@@ -38,20 +38,16 @@ class GetLoginModel {
 
 class LoginData {
   int id;
-  String profilePhotoUrl;
 
   LoginData({
     required this.id,
-    required this.profilePhotoUrl,
   });
 
   factory LoginData.fromJson(Map<String, dynamic> json) => LoginData(
     id: json["id"],
-    profilePhotoUrl: json["profile_photo_url"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "profile_photo_url": profilePhotoUrl,
   };
 }

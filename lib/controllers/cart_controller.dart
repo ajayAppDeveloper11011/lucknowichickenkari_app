@@ -316,7 +316,7 @@ class CartController extends AppBaseController {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Container(
-                              height: 120,
+                              height: 130,
                               width: MediaQuery.of(context).size.width,
                               decoration: BoxDecoration(
                                   color: AppColors.textFieldClr,
@@ -346,67 +346,70 @@ class CartController extends AppBaseController {
                                   const SizedBox(
                                     width: 20,
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      Container(
-                                        width:190,
-                                        child: Text(
-                                            cartData[index]
-                                                .productTitle,
-                                            overflow:
-                                            TextOverflow.ellipsis,
-                                            maxLines:1,
-                                            style: const TextStyle(
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                fontSize: 15)),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(
-                                        'Price : Rs.${cartData[index].productPrice}',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w700,
-                                            color: Colors.green),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      cartData[index].offer
-                                          .isEmpty
-                                          ? const Text(
-                                        'offer : 5%',
-                                        style: TextStyle(
-                                            fontWeight:
-                                            FontWeight.w700,
-                                            color: Colors.green),
-                                      )
-                                          : Text(
-                                        'offer : ${cartData[index].offer}',
-                                        style: const TextStyle(
-                                            fontWeight:
-                                            FontWeight.w700,
-                                            color: Colors.green),
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      calculationDiscount(index),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text('Quantity : ${cartData[index].productQty}',style: const TextStyle(fontWeight: FontWeight.w700,color:AppColors.black),),
-                                      // addToCart(index)
-                                    ],
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                      children: [
+                                        const SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          width:190,
+                                          child: Text(
+                                              cartData[index]
+                                                  .productTitle,
+                                              overflow:
+                                              TextOverflow.ellipsis,
+                                              maxLines:1,
+                                              style: const TextStyle(
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                  fontSize: 15)),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text(
+                                          'Price : Rs.${cartData[index].productPrice}',
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              color: Colors.green),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        // cartData[index].offer
+                                        //     .isEmpty
+                                        //     ?
+                                        const Text(
+                                          'Offer : 5%',
+                                          style: TextStyle(
+                                              fontWeight:
+                                              FontWeight.w700,
+                                              color: Colors.green),
+                                        ),
+                                        //     : Text(
+                                        //   'Offer : ${cartData[index].offer}',
+                                        //   style: const TextStyle(
+                                        //       fontWeight:
+                                        //       FontWeight.w700,
+                                        //       color: Colors.green),
+                                        // ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        calculationDiscount(index),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Text('Quantity : ${cartData[index].productQty}',style: const TextStyle(fontWeight: FontWeight.w700,color:AppColors.black),),
+                                        // addToCart(index)
+                                      ],
+                                    ),
                                   ),
                                   const SizedBox(
-                                    width: 10,
+                                    width: 15,
                                   ),
                                 ],
                               ),
@@ -494,7 +497,7 @@ class CartController extends AppBaseController {
                                     },
                                     style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary,
                                         shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10) )),
-                                    child: const Text('Place Order'),
+                                    child: const Text('Place Order',style: TextStyle(color: AppColors.white),),
                                   ),
                                 )
                               ],
@@ -520,6 +523,7 @@ class CartController extends AppBaseController {
     setBusy(true);
     try {
       Map<String, String> body = {};
+      body[RequestKeys.uniqueClientId]=ApiClient.uniqueKey;
       body[RequestKeys.userId]= userId.toString();
       GetAddressModelResponse res = await api.getAddressDataApi(body);
       print('----------->${body}');
@@ -550,9 +554,6 @@ class CartController extends AppBaseController {
   }
 
 
-
-
-
   List<Map<String,dynamic>> menCategoryData = [
     {
       'categoryImage' : 'assets/images/formal_image1.jpg','name': 'Men wear'
@@ -562,14 +563,12 @@ class CartController extends AppBaseController {
   ];
 
   addToCart(int index) {
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         GestureDetector(
           onTap: () {
-            print('IIIIIII');
             if (cartData[index].productQty >= 2) {
               cartData[index].productQty--; // Decrease the quantity for the specific item.
               calculationDiscount(index);
@@ -682,11 +681,12 @@ class CartController extends AppBaseController {
     try {
       Map<String, String> body = {};
       body[RequestKeys.uniqueClientId]= ApiClient.uniqueKey;
-      body[RequestKeys.userId]= userId.toString();
+      body[RequestKeys.userId]=user_id.toString();
       GetCartResponseModel res = await api.getCartCartApi(body);
-     print('----------->${body}');
+     print('----------->$body');
       if (res.error==true) {
         cartData = res.data;
+        // update();
         print('_____CartData length_____${cartData.length}_____________');
         print('_____Cart_____${res.message}_____________');
         priceCalculation();
@@ -716,6 +716,7 @@ class CartController extends AppBaseController {
       Map<String, String> body = {};
       body[RequestKeys.productId]= cartData[index].productId.toString();
       body[RequestKeys.userId]= userId.toString();
+      body[RequestKeys.uniqueClientId]=ApiClient.uniqueKey;
       DeleteCartResponseModel res = await api.deleteCartApi(body);
       print('_____id_____${body}_____________');
       if (res.error==true) {
@@ -779,7 +780,8 @@ class CartController extends AppBaseController {
     request.fields.addAll({
       'cart_id': cartData[index].cartId.toString(),
       'product_qty': cartData[index].productQty.toString(),
-      'user_id': userId.toString()
+      'user_id': userId.toString(),
+      'CLIENT_ID': ApiClient.uniqueKey
     });
 
     request.headers.addAll(headers);
@@ -787,8 +789,8 @@ class CartController extends AppBaseController {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      var Result = await response.stream.bytesToString();
-      final finalResult = CartUpdateModel.fromJson(json.decode(Result));
+      var result = await response.stream.bytesToString();
+      final finalResult = CartUpdateModel.fromJson(json.decode(result));
       if(finalResult.error==true){
         print('_____Cart Data_____${finalResult.message}_____________');
         getCartData();
@@ -808,7 +810,9 @@ class CartController extends AppBaseController {
   /// Place Order Api Integration ------------------>
   Future<void> placeOrder(context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    String? userId = pref.getString('user_id');
+
+    int? addId = pref.getInt('address_id');
+
     setBusy(true);
     String? payVia;
     print('-------------cxxxx------${payMethodName}');
@@ -817,7 +821,7 @@ class CartController extends AppBaseController {
     } else if (payMethodName == 'PayPal'){
       payVia = "PayPal";
     } else if (payMethodName =='Razorpay'){
-      payVia = "Razor Pay";
+      payVia = "RazorPay";
     } else if (payMethodName =='payStack'){
       payVia = "Paystack";
     } else if (payMethodName == 'Stripe'){
@@ -829,12 +833,12 @@ class CartController extends AppBaseController {
     } else if (payMethodName == 'BANK-TRANSFER'){
       payVia = "bank_transfer";
     }
-
+    print('------------payment select----------${payVia}');
     try {
       Map<String, String> body = {};
-      // body[RequestKeys.uniqueClientId]= ApiClient.uniqueKey;
-      body[RequestKeys.userId]=userId.toString();
-      body[RequestKeys.addressId]='3';
+      body[RequestKeys.uniqueClientId]= ApiClient.uniqueKey;
+      body[RequestKeys.userId]=user_id.toString();
+      body[RequestKeys.addressId]=addressData.first.id.toString();
       body[RequestKeys.paymentMode]= payVia ??'';
       body[RequestKeys.deliveryCharge]='10';
       body[RequestKeys.amount]= totalCartPrice.toString();
@@ -842,6 +846,8 @@ class CartController extends AppBaseController {
       print('-----place order------>$body');
       print('-----status------${res.status}');
       if (res.error==true) {
+        print('-----status------${res.status}');
+
         // placeOrderData = res.data;
         if(res.status=='0'){
           ShowMessage.showSnackBar('Server Res','Order Placed Successfully');
@@ -971,24 +977,25 @@ class CartController extends AppBaseController {
               ],
             ),
           ),
-          contentPadding: const EdgeInsets.fromLTRB(24, 20, 24, 0), // Adjust the content padding as needed
+          contentPadding: const EdgeInsets.fromLTRB(24, 20, 24,0), // Adjust the content padding as needed
           actions: <Widget>[
             ElevatedButton(
               style: ElevatedButton.styleFrom(primary: AppColors.primary),
-              child: const Text("YES"),
+              child: const Text("YES",style: TextStyle(color: AppColors.white),),
               onPressed: () {
                 checkSkipLogin(context);
               },
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(primary: AppColors.primary),
-              child: const Text("NO"),
+              style: ElevatedButton.styleFrom(primary: AppColors.red),
+              child: const Text("NO",style: TextStyle(color: AppColors.white)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
+            const SizedBox(height:20,),
           ],
-          actionsPadding: const EdgeInsets.symmetric(horizontal:26), // Adjust the actions padding as needed
+          actionsPadding: const EdgeInsets.symmetric(horizontal:20,vertical:10), // Adjust the actions padding as needed
         );
       },
     );
@@ -999,30 +1006,40 @@ class CartController extends AppBaseController {
 
   ///Calculation For Discount price------------------>
      // Variable to store the total price
-  calculationDiscount(index){
+  calculationDiscount(index) {
+    try {
+      productPrice = double.parse(cartData[index].productPrice);
+      discount = (productPrice * 10 / 100);
+      specialPrice = productPrice - discount;
+      specialPriceAsString = specialPrice.toStringAsFixed(2);
 
-     productPrice = double.parse(cartData[index].productPrice);
-     discount = (productPrice * 10 / 100);
-     specialPrice = productPrice - discount;
-     specialPriceAsString = specialPrice.toStringAsFixed(2);
-    double subTotal = (double.parse(specialPriceAsString) * cartData[index].productQty);
+      double subTotal = (double.parse(specialPriceAsString) * cartData[index].productQty);
 
-    totalCartPrice.value = subTotal; // Update the total price
-    print('total price: ${totalCartPrice.value}');
+      totalCartPrice.value = subTotal; // Update the total price
+      print('total price: ${totalCartPrice.value}');
 
-    for (int i = 1; i < cartData.length; i++) {
-      var productPrice = double.parse(cartData[i].productPrice);
-      var discount = (productPrice * 10 / 100); // 10% discount
-      var specialPrice = productPrice - discount;
-      var subTotal = specialPrice * cartData[i].productQty;
-      totalCartPrice.value += subTotal; // Update the total price
+      for (int i = 1; i < cartData.length; i++) {
+        try {
+          var productPrice = double.parse(cartData[i].productPrice);
+          var discount = (productPrice * 10 / 100); // 10% discount
+          var specialPrice = productPrice - discount;
+          var subTotal = specialPrice * cartData[i].productQty;
+          totalCartPrice.value += subTotal; // Update the total price
+        } catch (e) {
+          // Handle the error gracefully, e.g., by logging or displaying a message
+          print('Error parsing product price for index $i: $e');
+        }
+      }
 
+      print('total price: Rs. perfect valuee${totalCartPrice.value.toStringAsFixed(2)}');
+      return Text("Special Price : Rs.${(double.parse(specialPriceAsString) * cartData[index].productQty)}", style: const TextStyle(color: Colors.orange, fontSize: 12, fontWeight: FontWeight.w600,));
+    } catch (e) {
+      // Handle the error gracefully, e.g., by logging or displaying a message
+      print('Error parsing product price for index $index: $e');
+      return Text("Error: Invalid product price", style: const TextStyle(color: Colors.red));
     }
-    // print('total price: $totalCartPrice');
-    print('total price: Rs. perfect valuee${totalCartPrice.value.toStringAsFixed(2)}');
-    return Text("Special Price : Rs.${(double.parse(specialPriceAsString)*cartData[index].productQty)}",style: const TextStyle(color:Colors.orange, fontSize: 12, fontWeight: FontWeight.w600,));
-
   }
+
 
 
 }

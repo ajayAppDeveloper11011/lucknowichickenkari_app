@@ -29,12 +29,17 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
               },
               child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
           backgroundColor: AppColors.primary,
-          title: const Text('Sub-Category'),
+          title: const Text('Sub Category',style: TextStyle(color: AppColors.white),),
         ),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
+              controller.sub_CategoryData.isEmpty? const Padding(
+                padding: EdgeInsets.only(top:350.0),
+                child: Align(
+                    alignment: Alignment.center,
+                    child: Text('Data Not Found')),
+              ):Padding(
                 padding: const EdgeInsets.only(left: 10.0, right: 10, top: 20),
                 child: Container(
                   height: MediaQuery.of(context).size.height / 1,
@@ -42,7 +47,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                   child: GridView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: controller.menCategoryData.isEmpty ? 0 : controller.menCategoryData.length,
+                    itemCount: controller.sub_CategoryData.isEmpty ? 0 : controller.sub_CategoryData.length,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 7,
@@ -55,7 +60,12 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                           if(controller.userId==null){
                             ShowMessage.showSnackBar('Server Res','Please Login First');
                           }else{
-                            Get.toNamed(productScreen);
+                            // Get.toNamed(productScreen,arguments:controller.sub_CategoryData[index]);
+                            Get.toNamed(productScreen, arguments: {
+                              'subCateData': [controller.sub_CategoryData[index]],
+                              'origin': 'subcategory', // Add this to indicate navigation from the Subcategory screen
+                            });
+
                           }
                         },
                         child: Container(
@@ -69,8 +79,10 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  controller.menCategoryData[index]['categoryImage'],
+                                child:controller.sub_CategoryData[index].subcategoryImage==''?Image.asset('assets/images/formal_image1.jpg',fit: BoxFit.fill,
+                                    width: double.infinity,
+                                    height: double.infinity) : Image.network(
+                                  controller.sub_CategoryData[index].subcategoryImage,
                                   fit: BoxFit.fill,
                                   width: double.infinity,
                                   height: double.infinity,
@@ -93,7 +105,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        controller.menCategoryData[index]['subcategoryName'],
+                                        controller.sub_CategoryData[index].subcatTitle,
                                         style: const TextStyle(
                                           fontSize: 12,
                                           fontWeight: FontWeight.bold,

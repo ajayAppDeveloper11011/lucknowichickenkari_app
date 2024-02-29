@@ -1,6 +1,4 @@
 
-import 'package:device_preview/device_preview.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'Route_managements/all_pages.dart';
@@ -8,22 +6,20 @@ import 'Route_managements/routes.dart';
 import 'Route_managements/screen_bindings.dart';
 
 
-// void main() {
-//   runApp(const MyApp());
-// }
+void main() {
+  runApp(const MyApp());
+}
 
-
-void main() => runApp(
-  DevicePreview(
-    enabled: !kReleaseMode,
-    builder: (context) => MyApp(), // Wrap your app
-  ),
-);
+// void main() => runApp(
+//   DevicePreview(
+//     enabled: !kReleaseMode,
+//     builder: (context) => MyApp(), // Wrap your app
+//   ),
+// );
 
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -33,12 +29,15 @@ class MyApp extends StatelessWidget {
       getPages: AllPages.getPages(),
       initialBinding: ScreenBindings(),
       title: 'Lucknowichikankari ',
+      // theme: ThemeData(
+      //   primarySwatch: Colors.blue,
+      // ),
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: true,
+        colorSchemeSeed: Colors.white,
       ),
 
     );
   }
 }
-
 

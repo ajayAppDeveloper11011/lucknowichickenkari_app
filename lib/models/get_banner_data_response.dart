@@ -33,33 +33,17 @@ class GetBannerModel {
 }
 
 class BannerData {
-  int id;
   String bannerImage;
-  int status;
-  String createAt;
-  String updateAt;
 
   BannerData({
-    required this.id,
     required this.bannerImage,
-    required this.status,
-    required this.createAt,
-    required this.updateAt,
   });
 
   factory BannerData.fromJson(Map<String, dynamic> json) => BannerData(
-    id: json["id"],
     bannerImage: json["banner_image"],
-    status: json["status"],
-    createAt: json["create_at"],
-    updateAt: json["update_at"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
     "banner_image": bannerImage,
-    "status": status,
-    "create_at": createAt,
-    "update_at": updateAt,
   };
 }

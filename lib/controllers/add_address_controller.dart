@@ -6,6 +6,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:lucknowichickenkari_app/Route_managements/routes.dart';
+import 'package:lucknowichickenkari_app/Services/api_client.dart';
 import 'package:lucknowichickenkari_app/Utils/colors.dart';
 import 'package:lucknowichickenkari_app/controllers/appbased_controller/appbase_controller.dart';
 import 'package:lucknowichickenkari_app/models/add_address_model.dart';
@@ -57,13 +58,16 @@ class AddAddressController extends AppBaseController{
      countryName = pref.getString('country_name');
      pinCode = pref.getString('pin_code_num');
      mark = pref.getString('mark');
+     String? user_name = pref.getString('name_user');
+     String? user_mob = pref.getString('mob_user');
 
     setBusy(true);
     try {
       Map<String, String> body = {};
+      body[RequestKeys.uniqueClientId]=ApiClient.uniqueKey;
       body[RequestKeys.userId]= userId.toString();
-      body[RequestKeys.name]= 'Ajay Malviya';
-      body[RequestKeys.mobile]='6261253415';
+      body[RequestKeys.name]=user_name.toString();
+      body[RequestKeys.mobile]=user_mob.toString();
       body[RequestKeys.address]= addName.toString();
       body[RequestKeys.landmark]= mark.toString();
       body[RequestKeys.area]= areaName.toString();
@@ -105,14 +109,16 @@ class AddAddressController extends AppBaseController{
    pinCode = pref.getString('pin_code_num');
    mark = pref.getString('mark');
    int? id = pref.getInt('address_id');
-
+   String? user_name = pref.getString('name_user');
+   String? user_mob = pref.getString('mob_user');
 
    setBusy(true);
    try {
      Map<String, String> body = {};
+     body[RequestKeys.uniqueClientId]=ApiClient.uniqueKey;
      body[RequestKeys.userId]= userId.toString();
-     body[RequestKeys.name]= 'Ajay Malviya';
-     body[RequestKeys.mobile]='6261253415';
+     body[RequestKeys.name]= user_name.toString();
+     body[RequestKeys.mobile]=user_mob.toString();
      body[RequestKeys.address]= addName.toString();
      body[RequestKeys.landmark]= mark.toString();
      body[RequestKeys.area]= areaName.toString();

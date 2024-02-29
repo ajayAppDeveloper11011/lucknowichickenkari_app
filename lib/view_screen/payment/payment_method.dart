@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 
 import '../../Utils/colors.dart';
 import '../../controllers/payment_method_controller.dart';
+import '../../responsive_layout/responsive.dart';
 import '../Cart/cart_view.dart';
 
 class PaymentMethodScreen extends StatefulWidget {
@@ -22,7 +24,12 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
-            title: const Text('Payment Method'),
+            leading: InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: const Icon(Icons.arrow_back,color: AppColors.white,)),
+            title: const Text('Payment Method',style: TextStyle(color: AppColors.white),),
             backgroundColor: AppColors.primary,
           ),
           body: Column(

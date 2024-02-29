@@ -17,6 +17,7 @@ import '../models/product_data_response.dart';
 
 class HomeController extends AppBaseController{
   String? prodId;
+  bool showAllProducts = false;
   // bool isFavorite = false;
   @override
   void onInit() {
@@ -72,7 +73,13 @@ class HomeController extends AppBaseController{
       SharedPreferences pref = await SharedPreferences.getInstance();
       pref.setString('slug_name', slugId);
       print('-------------ProductList------${productListData[index]}');
-      Get.toNamed(productScreen,arguments:[productListData[index]],);
+      // Get.toNamed(productScreen,arguments:[productListData[index]],);
+      Get.toNamed(productScreen, arguments: {
+        'productDetailsData': [productListData[index]],
+        'origin': 'home', // Add this to indicate navigation from the Home screen
+      });
+
+
       print('-------------ProductList------${productListData[index]}');
 
     }
@@ -204,7 +211,7 @@ class HomeController extends AppBaseController{
 
         bannerListData = res.banner;
 
-        print('__________${res.message}_____________');
+        print('_____heyyyyyy_____${bannerListData}_____________');
         //ShowMessage.showSnackBar('Server Res', res.message ?? '');
         setBusy(false);
         update();
@@ -250,12 +257,14 @@ class HomeController extends AppBaseController{
  /// Add Favorite Api Function------------------>
 
   Future<void> addFavorite(index) async {
-
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? userId = pref.getString('user_id');
     setBusy(true);
     try {
       Map<String, String> body = {};
       body[RequestKeys.productId] = productListData[index].id.toString();
-      body[RequestKeys.userId] = '1';
+      body[RequestKeys.uniqueClientId]=ApiClient.uniqueKey;
+      body[RequestKeys.userId] = userId.toString();
 
       AddFavoriteModel res = await api.addToFavoriteApi(body);
       print('----${res.error}');
@@ -281,7 +290,7 @@ class HomeController extends AppBaseController{
     try {
       Map<String, String> body = {};
       body[RequestKeys.productId] = productListData[index].id.toString();
-      body[RequestKeys.userId] = '1';
+      body[RequestKeys.userId] = user_id.toString();
 
       RemoveFavoriteModel res = await api.removeFavoriteApi(body);
 

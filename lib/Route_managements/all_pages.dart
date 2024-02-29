@@ -58,7 +58,7 @@ class AllPages {
 
       GetPage(
           name:productScreen,
-          page: () =>  const ProductDetails(),
+          page: () =>ProductDetails(),
           binding: ScreenBindings()),
 
       GetPage(

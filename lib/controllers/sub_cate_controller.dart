@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:lucknowichickenkari_app/controllers/appbased_controller/appbase_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Services/api_client.dart';
@@ -6,16 +8,23 @@ import '../Widgets/show_message.dart';
 import '../models/sub_category_model.dart';
 
 class SubCategoryController extends AppBaseController{
-
+  bool subProductCheck = true ;
   String? userId;
+  String? catSlug;
+
   @override
   void onInit() {
     super.onInit();
+    if(Get.arguments!=null){
+      catSlug = Get.arguments;
+      print('---------catSlug-----$catSlug');
+    }
+
     subCategory();
 
   }
 
-  List<SubCategoryData>subCategoryData = [];
+  List<SubCategoryData>sub_CategoryData = [];
 
   List<Map<String,dynamic>> menCategoryData = [
     {
@@ -50,12 +59,12 @@ class SubCategoryController extends AppBaseController{
       Map<String, String> body = {};
       body[RequestKeys.uniqueClientId]= ApiClient.uniqueKey;
       body[RequestKeys.userId]= userId.toString();
-      body[RequestKeys.cateTitle]= 'man';
+      body[RequestKeys.slug]= catSlug.toString();
       SubCategoryModel res = await api.subCategoryDataApi(body);
       print('----------->${body}');
       if (res.error==true) {
-        subCategoryData = res.data;
-        print('_____Data_____${subCategoryData.length}_____________');
+        sub_CategoryData = res.data;
+        print('_____Data_____${sub_CategoryData.length}_____________');
         print('_____Sub Category_____${res.message}_____________');
         ShowMessage.showSnackBar('Server Res', res.message ?? '');
         setBusy(false);

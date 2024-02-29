@@ -29,24 +29,13 @@ class ProfileController extends AppBaseController{
  @override
   void onInit() {
    super.onInit();
-   checkSkipLogin();
-
+   userDetails();
  }
 
-
-  Future<void> checkSkipLogin() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    skipLogin = prefs.getBool('skipLogin') ?? false;
-    if (skipLogin) {
-      print('-----Skip Login------$skipLogin');
-      ShowMessage.showSnackBar('Server Res','Login First');
-      Get.toNamed(loginScreen);
-    } else {
-      print('-----You are Login------$skipLogin');
-      userDetails();
-      // Perform the regular login process
-    }
+  void checkLogin() {
+   Get.toNamed(loginScreen);
   }
+
 
 
   void onTapBackforAsk(BuildContext context) {
@@ -60,7 +49,7 @@ class ProfileController extends AppBaseController{
             ElevatedButton(
               style:
               ElevatedButton.styleFrom(primary: AppColors.primary),
-              child: const Text("YES"),
+              child: const Text("YES",style: TextStyle(color: AppColors.white),),
               onPressed: () {
                 onTapDelete();
                 // exit(0);
@@ -70,7 +59,8 @@ class ProfileController extends AppBaseController{
             ElevatedButton(
               style:
               ElevatedButton.styleFrom(primary: AppColors.primary),
-              child: const Text("NO"),
+              child: const Text("NO",style: TextStyle(color: AppColors.white
+              ),),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -210,7 +200,7 @@ class ProfileController extends AppBaseController{
                             }
                           },style: ElevatedButton.styleFrom(backgroundColor: AppColors.primary,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15))),
-                          child:const Text('Update')),
+                          child:const Text('Update',style:TextStyle(color:AppColors.white),)),
                     ),
                     const SizedBox(height: 15.0),
 
@@ -313,12 +303,11 @@ class ProfileController extends AppBaseController{
 
   /// User Details Update Api integration------>
   Future<void> userDetails() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = prefs.getString('user_id');
     setBusy(true);
     try {
       Map<String, String> body = {};
-      body[RequestKeys.userId] = userId.toString();
+      body[RequestKeys.uniqueClientId] =ApiClient.uniqueKey;
+      body[RequestKeys.userId] = user_id.toString();
       GetUserDetailsResponse res = await api.userDetailsDataApi(body);
       print('${res.message}_____message_');
       print('${body}_____parameter_');

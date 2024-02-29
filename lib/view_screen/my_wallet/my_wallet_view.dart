@@ -20,8 +20,13 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle : true,
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
           backgroundColor: AppColors.primary,
-          title:const Text('My Wallet'),
+          title:const Text('My Wallet',style: TextStyle(color: AppColors.white),),
         ),
         body: Column(
           children: [

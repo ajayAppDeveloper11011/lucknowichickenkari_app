@@ -1,27 +1,28 @@
-
+// To parse this JSON data, do
+//
+//     final orderDetailsResponseData = orderDetailsResponseDataFromJson(jsonString);
 
 import 'dart:convert';
 
+OrderDetailsResponseData orderDetailsResponseDataFromJson(String str) => OrderDetailsResponseData.fromJson(json.decode(str));
 
-GetCartResponseModel getCartResponseModelFromJson(String str) => GetCartResponseModel.fromJson(json.decode(str));
+String orderDetailsResponseDataToJson(OrderDetailsResponseData data) => json.encode(data.toJson());
 
-String getCartResponseModelToJson(GetCartResponseModel data) => json.encode(data.toJson());
-
-class GetCartResponseModel {
+class OrderDetailsResponseData {
   bool error;
   String message;
-  List<GetCartData> data;
+  List<OrderDetailsData> data;
 
-  GetCartResponseModel({
+  OrderDetailsResponseData({
     required this.error,
     required this.message,
     required this.data,
   });
 
-  factory GetCartResponseModel.fromJson(Map<String, dynamic> json) => GetCartResponseModel(
+  factory OrderDetailsResponseData.fromJson(Map<String, dynamic> json) => OrderDetailsResponseData(
     error: json["error"],
     message: json["message"],
-    data: List<GetCartData>.from(json["data"].map((x) => GetCartData.fromJson(x))),
+    data: List<OrderDetailsData>.from(json["data"].map((x) => OrderDetailsData.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -31,7 +32,7 @@ class GetCartResponseModel {
   };
 }
 
-class GetCartData {
+class OrderDetailsData {
   int cartId;
   String color;
   int productQty;
@@ -40,8 +41,8 @@ class GetCartData {
   int id;
   int catId;
   int subCatId;
-  dynamic fabricId;
   dynamic discount;
+  String offer;
   String productTitle;
   String productImage;
   String productPrice;
@@ -54,7 +55,7 @@ class GetCartData {
   String createdAt;
   String updatedAt;
 
-  GetCartData({
+  OrderDetailsData({
     required this.cartId,
     required this.color,
     required this.productQty,
@@ -63,8 +64,8 @@ class GetCartData {
     required this.id,
     required this.catId,
     required this.subCatId,
-    required this.fabricId,
     required this.discount,
+    required this.offer,
     required this.productTitle,
     required this.productImage,
     required this.productPrice,
@@ -78,30 +79,29 @@ class GetCartData {
     required this.updatedAt,
   });
 
-  factory GetCartData.fromJson(Map<String, dynamic> json) => GetCartData(
-    cartId: json["cartId"] ?? '',
-    color: json["color"] ?? '',
-    productQty: json["product_qty"] ?? 0, // Assuming productQty is an int
-    size: json["size"] ?? '',
-    productId: json["product_Id"] ?? 0, // Assuming productId is an int
-    id: json["id"] ?? 0, // Assuming id is an int
-    catId: json["cat_id"] ?? 0, // Assuming catId is an int
-    subCatId: json["sub_cat_id"] ?? 0, // Assuming subCatId is an int
-    fabricId: json["fabric_id"], // Assuming fabricId can be null
-    discount: json["discount"], // Assuming discount can be null
-    productTitle: json["product_title"] ?? '',
-    productImage: json["product_image"] ?? '',
-    productPrice: json["product_price"] ?? '',
-    slug: json["slug"] ?? '',
-    productShortDesc: json["product_short_desc"] ?? '',
-    productLongDesc: json["product_long_desc"] ?? '',
-    metaTitleTag: json["meta_title_tag"] ?? '',
-    metaTitleKeywords: json["meta_title_keywords"] ?? '',
-    metaTitleDescription: json["meta_title_description"] ?? '',
-    createdAt: json["created_at"] ?? '',
-    updatedAt: json["updated_at"] ?? '',
+  factory OrderDetailsData.fromJson(Map<String, dynamic> json) => OrderDetailsData(
+    cartId: json["cartId"]??'',
+    color: json["color"]??'',
+    productQty: json["product_qty"]??'',
+    size: json["size"]??'',
+    productId: json["product_Id"]??'',
+    id: json["id"]??'',
+    catId: json["cat_id"]??'',
+    subCatId: json["sub_cat_id"]??'',
+    discount: json["discount"]??'',
+    offer: json["offer"]??'',
+    productTitle: json["product_title"]??'',
+    productImage: json["product_image"]??'',
+    productPrice: json["product_price"]??'',
+    slug: json["slug"]??'',
+    productShortDesc: json["product_short_desc"]??'',
+    productLongDesc: json["product_long_desc"]??'',
+    metaTitleTag: json["meta_title_tag"]??'',
+    metaTitleKeywords: json["meta_title_keywords"]??'',
+    metaTitleDescription: json["meta_title_description"]??'',
+    createdAt: json["created_at"]??'',
+    updatedAt: json["updated_at"]??'',
   );
-
 
   Map<String, dynamic> toJson() => {
     "cartId": cartId,
@@ -112,8 +112,8 @@ class GetCartData {
     "id": id,
     "cat_id": catId,
     "sub_cat_id": subCatId,
-    "fabric_id": fabricId,
     "discount": discount,
+    "offer": offer,
     "product_title": productTitle,
     "product_image": productImage,
     "product_price": productPrice,
@@ -127,4 +127,3 @@ class GetCartData {
     "updated_at": updatedAt,
   };
 }
-

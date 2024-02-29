@@ -21,8 +21,13 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle : true,
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
           backgroundColor: AppColors.primary,
-          title:const Text('About Us'),
+          title:const Text('About Us',style: TextStyle(color: AppColors.white),),
         ),
         body: Container(
           padding: const EdgeInsets.only(left:20,right: 20,top: 20 ),

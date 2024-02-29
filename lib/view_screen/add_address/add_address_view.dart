@@ -10,7 +10,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_place_picker_mb/google_maps_place_picker.dart';
 import 'package:lucknowichickenkari_app/Utils/colors.dart';
 import 'package:lucknowichickenkari_app/controllers/add_address_controller.dart';
-import 'package:lucknowichickenkari_app/map/Map.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../session/Session.dart';
@@ -54,6 +53,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
   var pincode;
   var street;
   Set<Marker> _markers = Set();
+
+  setData() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('name_user',nameController.text);
+    pref.setString('mob_user',mobileController.text);
+    print('this is my mobile-----${mobileController.text}');
+  }
 
   Future getCurrentLocation() async {
     List<Placemark> placemark =
@@ -106,6 +112,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       pref.setString('mark',street);
 
 
+
     }
   }
 
@@ -119,7 +126,12 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         backgroundColor: AppColors.textFieldClr,
         appBar: AppBar(
           centerTitle: true,
-          title:const Text('Add Address'),
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
+          title:const Text('Add Address',style: TextStyle(color:AppColors.white),),
           backgroundColor: AppColors.primary,
         ),
         body:Padding(
@@ -144,6 +156,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
                   if(controller.val==true){
                     controller.updateAddress();
                   }else{
+                    setData();
                     controller.addAddressR();
                   }
                 })
@@ -174,13 +187,15 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.next,
             focusNode: nameFocus,
-            controller: nameC,
+            controller: nameController,
+
             textCapitalization: TextCapitalization.words,
             validator: (val) => validateUserName(
                 val!,
                 'Name is require',
                 'User'),
             onSaved: (String? value) {
+              print('-----name------${name}');
               name = value;
             },
             onFieldSubmitted: (v) {
@@ -214,7 +229,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           child: TextFormField(
             keyboardType: TextInputType.number,
             maxLength: 10,
-            controller: mobileC,
+            controller: mobileController,
             inputFormatters: [FilteringTextInputFormatter.digitsOnly],
             textInputAction: TextInputAction.next,
             focusNode: monoFocus,

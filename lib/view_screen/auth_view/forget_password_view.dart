@@ -24,7 +24,12 @@ class _ForgetScreenState extends State<ForgetScreen> {
         appBar: AppBar(
           backgroundColor: AppColors.primary,
           centerTitle: true,
-          title:const Text('Forget Password'),
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
+          title:const Text('Forget Password',style: TextStyle(color: AppColors.white),),
         ),
         body:Padding(
           padding: const EdgeInsets.all(20.0),

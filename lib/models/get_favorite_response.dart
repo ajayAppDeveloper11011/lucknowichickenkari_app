@@ -36,13 +36,13 @@ class FavoriteData {
   int id;
   int userId;
   int productId;
-  int isfavorites;
-  String createdAt;
-  String updatedAt;
+  dynamic isfavorites;
+  dynamic createdAt;
+  dynamic updatedAt;
   int catId;
   int subCatId;
+  dynamic fabricId;
   dynamic discount;
-  String offer;
   String productTitle;
   String productImage;
   String productPrice;
@@ -62,8 +62,8 @@ class FavoriteData {
     required this.updatedAt,
     required this.catId,
     required this.subCatId,
+    required this.fabricId,
     required this.discount,
-    required this.offer,
     required this.productTitle,
     required this.productImage,
     required this.productPrice,
@@ -76,16 +76,16 @@ class FavoriteData {
   });
 
   factory FavoriteData.fromJson(Map<String, dynamic> json) => FavoriteData(
-    id: json["id"]??'',
-    userId: json["user_id"]??'',
-    productId: json["product_id"]??'',
-    isfavorites: json["isfavorites"]??'',
-    createdAt: json["created_at"]??'',
-    updatedAt: json["updated_at"]??'',
-    catId: json["cat_id"]??'',
-    subCatId: json["sub_cat_id"]??'',
-    discount: json["discount"]??'',
-    offer: json["offer"]??'',
+    id: json["id"],
+    userId: json["user_id"],
+    productId: json["product_id"],
+    isfavorites: json["isfavorites"],
+    createdAt: json["created_at"],
+    updatedAt: json["updated_at"],
+    catId: json["cat_id"],
+    subCatId: json["sub_cat_id"],
+    fabricId: json["fabric_id"],
+    discount: json["discount"],
     productTitle: json["product_title"],
     productImage: json["product_image"],
     productPrice: json["product_price"],
@@ -106,8 +106,8 @@ class FavoriteData {
     "updated_at": updatedAt,
     "cat_id": catId,
     "sub_cat_id": subCatId,
+    "fabric_id": fabricId,
     "discount": discount,
-    "offer": offer,
     "product_title": productTitle,
     "product_image": productImage,
     "product_price": productPrice,

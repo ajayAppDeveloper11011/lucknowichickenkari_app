@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lucknowichickenkari_app/Services/api_client.dart';
 import 'package:lucknowichickenkari_app/controllers/appbased_controller/appbase_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -61,6 +62,7 @@ class ManageAddressController extends AppBaseController{
     setBusy(true);
     try {
       Map<String, String> body = {};
+      body[RequestKeys.uniqueClientId]=ApiClient.uniqueKey;
       body[RequestKeys.userId]= userId.toString();
       GetAddressModelResponse res = await api.getAddressDataApi(body);
       print('----------->${body}');
@@ -89,6 +91,7 @@ class ManageAddressController extends AppBaseController{
     setBusy(true);
     try {
       Map<String, String> body = {};
+      body[RequestKeys.uniqueClientId]=ApiClient.uniqueKey;
       body[RequestKeys.uniqueAddressId]=addressData[index].id.toString();
 
       DeleteAddressResponseModel res = await api.deleteAddressDataApi(body);

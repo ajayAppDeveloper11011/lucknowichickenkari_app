@@ -21,8 +21,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle : true,
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
           backgroundColor: AppColors.primary,
-          title:const Text('Transaction'),
+          title:const Text('Transaction',style: TextStyle(color: AppColors.white),),
         ),
         body: const Center(child: Text('Data Not Found')),
       );

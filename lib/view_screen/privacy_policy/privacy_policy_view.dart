@@ -20,8 +20,13 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle : true,
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
           backgroundColor: AppColors.primary,
-          title:const Text('Privacy Policy'),
+          title:const Text('Privacy Policy',style: TextStyle(color: AppColors.white),),
         ),
         body: Container(
           padding: const EdgeInsets.only(left: 10,right: 10,top:20),

@@ -1,18 +1,16 @@
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart'as http;
-import 'package:lucknowichickenkari_app/Services/request_keys.dart';
 import 'package:lucknowichickenkari_app/models/add_favorite_model.dart';
 import 'package:lucknowichickenkari_app/models/add_to_cart_response.dart';
 import 'package:lucknowichickenkari_app/models/delete_cart_response.dart';
 import 'package:lucknowichickenkari_app/models/get_cart_data_response.dart';
 import 'package:lucknowichickenkari_app/models/get_favorite_response.dart';
 import 'package:lucknowichickenkari_app/models/get_notification_model.dart';
+import 'package:lucknowichickenkari_app/models/get_order_details_response.dart';
 import 'package:lucknowichickenkari_app/models/product_data_response.dart';
 import 'package:lucknowichickenkari_app/models/remove_favorite_model.dart';
 import 'package:lucknowichickenkari_app/models/update_address_model.dart';
-import 'package:lucknowichickenkari_app/session/Session.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/add_address_model.dart';
 import '../models/category_data_response.dart';
@@ -29,7 +27,6 @@ import '../models/sign_up_model_response.dart';
 import '../models/sub_category_model.dart';
 import '../models/update_cart_response.dart';
 import '../models/user_details_model.dart';
-import '../models/user_update_response.dart';
 import 'api_client.dart';
 import 'api_methods.dart';
 
@@ -114,7 +111,7 @@ final Connectivity connectivity = Connectivity();
     if (await connectivity.checkConnectivity() == ConnectivityResult.wifi ||
         await connectivity.checkConnectivity() == ConnectivityResult.mobile) {
       String res =
-      await _apiClient.postMethod(method: _apiMethods.getBanner, body: body);
+      await _apiClient.getMethod(method: _apiMethods.getBanner, body: body);
       if (res.isNotEmpty) {
         try {
           return getBannerModelFromJson(res);
@@ -607,6 +604,29 @@ final Connectivity connectivity = Connectivity();
       }
     } else {
       return GetUserDetailsResponse(error: true, message: 'No Internet', data: []);
+    }
+  }
+
+
+  Future<OrderDetailsResponseData> orderDetailsDataApi(Map<String, String> body) async {
+    if (await connectivity.checkConnectivity() == ConnectivityResult.wifi ||
+        await connectivity.checkConnectivity() == ConnectivityResult.mobile) {
+      String res =
+      await _apiClient.postMethod(method: _apiMethods.orderDetails, body: body);
+      if (res.isNotEmpty) {
+        try {
+          return orderDetailsResponseDataFromJson(res);
+        } catch (e) {
+          if (kDebugMode) {
+            print(e);
+          }
+          return OrderDetailsResponseData(error: true, message: e.toString(), data: []);
+        }
+      } else {
+        return OrderDetailsResponseData(error: true, message: 'Something went wrong', data: []);
+      }
+    } else {
+      return OrderDetailsResponseData(error: true, message: 'No Internet', data: []);
     }
   }
 

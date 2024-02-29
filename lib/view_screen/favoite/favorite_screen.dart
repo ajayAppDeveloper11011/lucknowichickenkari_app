@@ -27,7 +27,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 },
                 child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
             backgroundColor: AppColors.primary,
-            title: const Text('Favorite'),
+            title: const Text('Favorite',style: TextStyle(color: AppColors.white),),
           ),
           body: controller.favoriteData.isEmpty
               ? const Center(
@@ -66,7 +66,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                                     .width *
                                                 0.05),
                                         child: Container(
-                                          height: 140,
+                                          height: 170,
                                           width:
                                               MediaQuery.of(context).size.width,
                                           child: Card(
@@ -117,7 +117,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                                                     context)
                                                                 .size
                                                                 .width *
-                                                            0.4,
+                                                            0.5,
                                                         child: Text(
                                                           controller
                                                               .favoriteData[
@@ -148,23 +148,20 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                                       const SizedBox(
                                                         height: 5,
                                                       ),
-                                                      controller
-                                                              .favoriteData[
-                                                                  index]
-                                                              .offer
-                                                              .isEmpty
-                                                          ? const Text(
-                                                              'offer : 5%',
+                                                      // controller.favoriteData[index].offer.isEmpty
+                                                      //     ? const Text(
+                                                      //         'offer : 5%',
+                                                      //         style: TextStyle(
+                                                      //             fontWeight:
+                                                      //                 FontWeight
+                                                      //                     .w700,
+                                                      //             color: Colors
+                                                      //                 .green),
+                                                      //       )
+                                                      //     :
+                                                      const Text(
+                                                              'Offer : 10%',
                                                               style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w700,
-                                                                  color: Colors
-                                                                      .green),
-                                                            )
-                                                          : Text(
-                                                              'offer : ${controller.favoriteData[index].offer}',
-                                                              style: const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w700,

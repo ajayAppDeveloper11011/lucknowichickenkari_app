@@ -20,8 +20,13 @@ class _ContactUsScreenState extends State<ContactUsScreen> {
       return Scaffold(
         appBar: AppBar(
           centerTitle : true,
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
           backgroundColor: AppColors.primary,
-          title:const Text('Contact Us'),
+          title:const Text('Contact Us',style:TextStyle(color: AppColors.white),),
         ),
         body:Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -98,7 +98,7 @@ class _BottomBarState extends State<BottomBar> {
                     ElevatedButton(
                       style:
                           ElevatedButton.styleFrom(primary: AppColors.primary),
-                      child: const Text("YES"),
+                      child: const Text("YES",style: TextStyle(color: AppColors.white),),
                       onPressed: () {
                         exit(0);
                         // Get.toNamed(splashScreen);
@@ -108,7 +108,7 @@ class _BottomBarState extends State<BottomBar> {
                     ElevatedButton(
                       style:
                           ElevatedButton.styleFrom(primary: AppColors.primary),
-                      child: const Text("NO"),
+                      child: const Text("NO",style: TextStyle(color: AppColors.white)),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },

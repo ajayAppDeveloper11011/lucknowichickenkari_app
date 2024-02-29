@@ -30,8 +30,13 @@ class _CartScreenState extends State<CartScreen> {
         return Scaffold(
           appBar: AppBar(
             centerTitle: true,
+            leading: InkWell(
+                onTap: () {
+                  Get.back();
+                },
+                child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
             backgroundColor: AppColors.primary,
-            title: const Text('Cart'),
+            title: const Text('Cart',style: TextStyle(color:AppColors.white),),
             actions: [
               Padding(
                 padding: const EdgeInsets.only(left: 10.0, right: 10),
@@ -39,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
                     onTap: () {
                       controller.onTapNotification();
                     },
-                    child: const Icon(Icons.notifications)),
+                    child: const Icon(Icons.notifications,color: AppColors.white,)),
               ),
             ],
           ),
@@ -55,7 +60,7 @@ class _CartScreenState extends State<CartScreen> {
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.cartData.length,
+                    itemCount:controller.cartData.isEmpty ? 0 : controller.cartData.length,
                     itemBuilder: (context, index) {
                       return Stack(
                         children: [
@@ -124,21 +129,23 @@ class _CartScreenState extends State<CartScreen> {
                                             const SizedBox(
                                               height: 5,
                                             ),
-                                            controller.cartData[index].offer.isEmpty
-                                                ? const Text(
+                                            // controller.cartData[index].offer.isEmpty
+                                            //     ?
+                                            const Text(
                                               'offer : 5%',
                                               style: TextStyle(
                                                   fontWeight:
                                                   FontWeight.w700,
                                                   color: Colors.green),
-                                            )
-                                                : Text(
-                                              'offer : ${controller.cartData[index].offer}',
-                                              style: const TextStyle(
-                                                  fontWeight:
-                                                  FontWeight.w700,
-                                                  color: Colors.green),
                                             ),
+
+                                            //     : Text(
+                                            //   'offer : ${controller.cartData[index].offer}',
+                                            //   style: const TextStyle(
+                                            //       fontWeight:
+                                            //       FontWeight.w700,
+                                            //       color: Colors.green),
+                                            // ),
                                             const SizedBox(
                                               height: 5,
                                             ),

@@ -36,13 +36,14 @@ class _ManageAddressState extends State<ManageAddress> {
           ),
           appBar: AppBar(
             centerTitle : true,
+
             backgroundColor: AppColors.primary,
-            title:const Text('Manage Address'),
+            title:const Text('Manage Address',style: TextStyle(color: AppColors.white),),
             leading: InkWell(
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: const Icon(Icons.arrow_back)),
+                child: const Icon(Icons.arrow_back,color: AppColors.white,)),
           ),
           body: controller.isBusy
               ? const Center(
@@ -54,114 +55,114 @@ class _ManageAddressState extends State<ManageAddress> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-            Container(
+                const SizedBox(height: 20,),
+              Container(
                 height: MediaQuery.of(context).size.height / 1.2,
                   width: MediaQuery.of(context).size.width / 1,
               child:controller.addressData.isEmpty ?const Center(child: Text('Data not Found')):ListView.builder(
                    itemCount: controller.addressData.isEmpty ? 0 : controller.addressData.length,
                    physics: const AlwaysScrollableScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
 
                 return Padding(
-                  padding: const EdgeInsets.only(left: 20.0, right: 20, top: 20),
+                  padding: const EdgeInsets.only(left: 20.0, right: 20),
                   child: Container(
                     height: 130,
                     width: MediaQuery.of(context).size.width / 1,
-                    decoration: BoxDecoration(
-                      color: AppColors.textFieldClr,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '${controller.addressData[index].name} ,${controller.addressData[index].mobile}',
-                                style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w700),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Get.toNamed(addAddressScreen,arguments:true);
-                                  controller.addId = controller.addressData[index].id;
-                                  controller.saveIndexToSharedPreferences();
-                                },
-                                child: Container(
-                                  width: 60,
-                                  height: 25,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primary,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      'Edit',
-                                      style: TextStyle(color: AppColors.whit),
+                    child: Card(
+                      elevation:4,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20.0, right: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '${controller.addressData[index].name} ,${controller.addressData[index].mobile}',
+                                  style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w700),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Get.toNamed(addAddressScreen,arguments:true);
+                                    controller.addId = controller.addressData[index].id;
+                                    controller.saveIndexToSharedPreferences();
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primary,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Edit',
+                                        style: TextStyle(color: AppColors.whit),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 5),
-                          Container(
-                            height: 30,
-                            width: MediaQuery.of(context).size.width / 1.2,
-                            child: Text(
-                              controller.addressData[index].address.toString(),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                              style: const TextStyle(color: AppColors.black,fontSize: 12, fontWeight: FontWeight.w500,),
+                              ],
                             ),
-                          ),
-                          // Text(
-                          //   controller.addressData[index].pincode,
-                          //   overflow: TextOverflow.ellipsis,
-                          //   maxLines: 2,
-                          //   style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w700),
-                          // ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Checkbox(
-                                checkColor: Colors.white,
-                                fillColor: MaterialStateColor.resolveWith((states) => AppColors.secondary),
-                                value: controller.selectedAddressIndex == index,
-                                onChanged: (val) {
-                                  controller.setSelectedAddressIndex(index);
-                                  controller.update();
-                                },
+                            const SizedBox(height: 5),
+                            Container(
+                              height: 30,
+                              width: MediaQuery.of(context).size.width / 1.2,
+                              child: Text(
+                                controller.addressData[index].address.toString(),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                style: const TextStyle(color: AppColors.black,fontSize: 12, fontWeight: FontWeight.w500,),
                               ),
-                              const Text('Marked as Default'),
-                              const SizedBox(width: 10),
-                              InkWell(
-                                onTap: () {
-                                  controller.deleteAddress(index);
-                                },
-                                child: Container(
-                                  width: 60,
-                                  height: 25,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.red,
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  child: const Center(
-                                    child: Text(
-                                      'Delete',
-                                      style: TextStyle(color: AppColors.whit),
+                            ),
+                            // Text(
+                            //   controller.addressData[index].pincode,
+                            //   overflow: TextOverflow.ellipsis,
+                            //   maxLines: 2,
+                            //   style: const TextStyle(color: AppColors.black, fontWeight: FontWeight.w700),
+                            // ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Checkbox(
+                                  checkColor: Colors.white,
+                                  fillColor: MaterialStateColor.resolveWith((states) => AppColors.secondary),
+                                  value: controller.selectedAddressIndex == index,
+                                  onChanged: (val) {
+                                    controller.setSelectedAddressIndex(index);
+                                    controller.update();
+                                  },
+                                ),
+                                const Text('Marked as Default'),
+                                const SizedBox(width: 10),
+                                InkWell(
+                                  onTap: () {
+                                    controller.deleteAddress(index);
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 25,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.red,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: const Center(
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(color: AppColors.whit),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ],
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

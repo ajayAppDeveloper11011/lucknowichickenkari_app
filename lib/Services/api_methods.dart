@@ -32,6 +32,7 @@ class ApiMethods {
   String registerUser = 'registration';
   String userDetails = 'user/detailes';
   String userUpdateData = 'user/update';
+  String orderDetails= 'order/details';
 
 
 

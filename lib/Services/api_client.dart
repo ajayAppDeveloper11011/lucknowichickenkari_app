@@ -14,8 +14,8 @@ class ApiClient extends GetConnect {
   ApiClient._internal();
 
 
-  static const imageUrl2= 'http://lucknowichikankari.in/';
-  static const baseAppUrl = 'http://lucknowichikankari.in/backend/api/';
+  static const imageUrl2= 'https://www.lucknowichikankari.in/';
+  static const baseAppUrl = 'https://www.lucknowichikankari.in/backend/api/';
   static const uniqueKey = '9|X7hWJKiyKDvdeJAnlGTQuoXa8eQ4kui0cmRAJergef4f44e5';
 
 

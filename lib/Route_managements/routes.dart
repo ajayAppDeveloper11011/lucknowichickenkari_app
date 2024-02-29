@@ -1,3 +1,5 @@
+
+ String? user_id;
 const String  splashScreen =  '/SPLASH_SCREEN';
 const String loginScreen  = '/LOGIN_SCREEN';
 const String signupScreen  = '/SIGNUP_SCREEN';

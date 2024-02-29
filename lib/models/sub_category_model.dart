@@ -56,15 +56,15 @@ class SubCategoryData {
   });
 
   factory SubCategoryData.fromJson(Map<String, dynamic> json) => SubCategoryData(
-    id: json["id"],
-    catId: json["cat_id"],
-    subcatTitle: json["subcat_title"],
-    subcategoryImage: json["subcategory_image"],
-    metaTitleTag: json["meta_title_tag"],
-    metaTitleKeywords: json["meta_title_keywords"],
-    metaTitleDescription: json["meta_title_description"],
-    createdAt: json["created_at"],
-    updatedAt: json["updated_at"],
+    id: json["id"]??'',
+    catId: json["cat_id"]??'',
+    subcatTitle: json["subcat_title"]??'',
+    subcategoryImage: json["subcategory_image"]??'',
+    metaTitleTag: json["meta_title_tag"]??'',
+    metaTitleKeywords: json["meta_title_keywords"]??'',
+    metaTitleDescription: json["meta_title_description"]??'',
+    createdAt: json["created_at"]??'',
+    updatedAt: json["updated_at"]??'',
   );
 
   Map<String, dynamic> toJson() => {

@@ -12,11 +12,11 @@ class SplashController extends AppBaseController {
     // TODO: implement onInit
     super.onInit();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? isLogin = prefs.getString('user_id');
-    print('this is userid====$isLogin');
-    if(isLogin == null){
+    user_id = prefs.getString('user_id');
+    print('this is userid====$user_id');
+    if(user_id == null){
       Future.delayed( const Duration(seconds: 3),(){
-        Get.offNamed(loginScreen);
+        Get.offNamed(bottomBar);
       });
 
     }else{

@@ -47,8 +47,13 @@ class _CategoriesScreenState extends State<CategoriesScreen>with SingleTickerPro
       return Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          leading: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: const Icon(Icons.arrow_back,color: AppColors.whit,)),
           backgroundColor: AppColors.primary,
-          title: const Text('Categories'),
+          title: const Text('Categories',style: TextStyle(color:AppColors.white),),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -114,14 +119,14 @@ class _CategoriesScreenState extends State<CategoriesScreen>with SingleTickerPro
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: controller.menCategoryData.length,
+                  itemCount: controller.categoryListData.length,
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Get.toNamed(subCateScreen);
+                        Get.toNamed(subCateScreen,arguments:controller.categoryListData[index].slug);
                       },
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical:5),
                         child: Card(
                           elevation: 4,
                           shape: RoundedRectangleBorder(
@@ -130,11 +135,6 @@ class _CategoriesScreenState extends State<CategoriesScreen>with SingleTickerPro
                           child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              gradient: const LinearGradient(
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
-                                colors: [Colors.pink, Colors.purple],
-                              ),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -142,45 +142,45 @@ class _CategoriesScreenState extends State<CategoriesScreen>with SingleTickerPro
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(16.0),
-                                  child: Container(
-                                    height: 100,
-                                    width: 150,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          controller.menCategoryData[index]['name'],
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                            color: Colors.white,
-                                          ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        controller.categoryListData[index].catTitle,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.black,
                                         ),
-                                        const SizedBox(height: 8),
-                                        const Text(
-                                          "Explore Now",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        "Explore Now",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
                                         ),
+                                      ),
 
-                                      ],
-                                    ),
+                                    ],
                                   ),
                                 ),
                                 const SizedBox(width: 10),
                                 Hero(
                                   tag: 'image$index',
                                   child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: Image.asset(
-                                      controller.menCategoryData[index]['categoryImage'],
+                                    borderRadius:const BorderRadius.only(
+                                        bottomRight: Radius.circular(7.0),
+                                        topRight: Radius.circular(7.0)),
+                                    child:controller.categoryListData[index].catImage==''?Image.asset('assets/images/formal_image1.jpg', fit: BoxFit.fill,
+                                      height: 120,
+                                      width: 120,) : Image.network(
+                                      controller.categoryListData[index].catImage,
                                       fit: BoxFit.fill,
-                                      height: 140,
+                                      height:130,
                                       width: 120,
 
                                     ),
@@ -196,190 +196,171 @@ class _CategoriesScreenState extends State<CategoriesScreen>with SingleTickerPro
                 ),
               ),
               Visibility(
-                 visible: controller.curIndex == 1,
+                visible: controller.curIndex == 1,
                 child: ListView.builder(
-                   padding: EdgeInsets.zero,
-                   scrollDirection: Axis.vertical,
-                   shrinkWrap: true,
-                   physics: const NeverScrollableScrollPhysics(),
-                   itemCount: controller.womenCategoryData.length,
-                   itemBuilder: (context, index) {
-                   var item = controller.womenCategoryData[index];
-                return GestureDetector(
-                  onTap: () {
-                    Get.toNamed(subCateScreen);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Card(
-                      elevation: 4,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          gradient: const LinearGradient(
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                            colors: [Colors.pink, Colors.purple],
+                  padding: EdgeInsets.zero,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.womenCategoryData.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Get.toNamed(subCateScreen);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical:5),
+                        child: Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Container(
-                                height: 100,
-                                width: 150,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
                                       Text(
-                                        controller.womenCategoryData[index]['name'],
+                                        controller.categoryListData[index].catTitle,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 2,
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,
-                                          color: Colors.white,
+                                          color: Colors.black,
                                         ),
                                       ),
-                                    const SizedBox(height: 8),
-                                    const Text(
+                                      const SizedBox(height: 8),
+                                      const Text(
                                         "Explore Now",
                                         style: TextStyle(
-                                          color: Colors.white,
+                                          color: Colors.black,
                                           fontWeight: FontWeight.w500,
                                         ),
                                       ),
-                                  ],
+
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(width: 10),
-                            Hero(
-                              tag: 'image$index',
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.asset(
-                                  controller.womenCategoryData[index]['categoryImage'],
-                                  fit: BoxFit.fill,
-                                  height: 140,
-                                  width: 120,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-              Visibility(
-                  visible: controller.curIndex == 2,
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: controller.kidsCategoryData.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          // Your navigation logic here
-                          Get.toNamed(subCateScreen);
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 8),
-                          child: Card(
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                gradient: const LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: [Colors.pink, Colors.purple],
-                                ),
-                              ),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: Container(
-                                      height: 100,
-                                      width: 150,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          FadeTransition(
-                                            opacity: _animation,
-                                            child: Text(
-                                              controller.kidsCategoryData[index]
-                                                  ['name'],
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 2,
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(height: 8),
-                                          FadeTransition(
-                                            opacity: _animation,
-                                            child: const Text(
-                                              "Explore Now",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                const SizedBox(width: 10),
+                                Hero(
+                                  tag: 'image$index',
+                                  child: ClipRRect(
+                                    borderRadius:const BorderRadius.only(
+                                        bottomRight: Radius.circular(7.0),
+                                        topRight: Radius.circular(7.0)),
+                                    child:controller.categoryListData[index].catImage==''?Image.asset(controller.womenCategoryData[index]['categoryImage'], fit: BoxFit.fill,
+                                      height: 120,
+                                      width: 120,) : Image.network(
+                                      controller.categoryListData[index].catImage,
+                                      fit: BoxFit.fill,
+                                      height:130,
+                                      width: 120,
+
                                     ),
                                   ),
-                                  const SizedBox(width: 10),
-                                  Hero(
-                                    tag: 'image$index',
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(15),
-                                      child: Image.asset(
-                                        controller.kidsCategoryData[index]
-                                            ['categoryImage'],
-                                        fit: BoxFit.fill,
-                                        height: 140,
-                                        width: 120,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                )
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Visibility(
+                visible: controller.curIndex == 2,
+                child: ListView.builder(
+                  padding: EdgeInsets.zero,
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: controller.categoryListData.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        Get.toNamed(subCateScreen);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical:5),
+                        child: Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        controller.categoryListData[index].catTitle,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 2,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      const Text(
+                                        "Explore Now",
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Hero(
+                                  tag: 'image$index',
+                                  child: ClipRRect(
+                                    borderRadius:const BorderRadius.only(
+                                        bottomRight: Radius.circular(7.0),
+                                        topRight: Radius.circular(7.0)),
+                                    child:controller.categoryListData[index].catImage==''?Image.asset('assets/images/formal_image1.jpg', fit: BoxFit.fill,
+                                      height: 120,
+                                      width: 120,) : Image.network(
+                                      controller.categoryListData[index].catImage,
+                                      fit: BoxFit.fill,
+                                      height:130,
+                                      width: 120,
+
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
               ],
           ),
         ),
